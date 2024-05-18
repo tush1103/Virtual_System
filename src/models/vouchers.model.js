@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const voucherSchema=new Schema({
     type:{
         type:String,
-        enum:['discount','walletPoints','walletCash','firstOrder','birthdayGift'],
+        enum:['discountCash','discountPerc','walletPoints','walletCash','firstOrder','birthdayGift','freeshippingVoucher'],
         required:true
     },
     code:{
@@ -30,22 +30,6 @@ const voucherSchema=new Schema({
     walletPoint:{
         type:Number,
         default:0
-    },
-    triggeredProduct:{
-        type:Schema.Types.ObjectId,
-        ref:'Product'
-    },
-    additionalFreeProduct:{
-        type:Schema.Types.ObjectId,
-        ref:'Product'
-    },
-    firstOrder:{
-        type:Number,
-        default:0
-    },
-    birthdayGiftProduct:{
-        type:Schema.Types.ObjectId,
-        ref:'Product'
     },
     createdAt:{
         type:Date,
