@@ -1,5 +1,5 @@
-import { hashPassword, comparePassword } from '../helper/authHelper'
-import userModel from '../models/user.model'
+import { hashPassword, comparePassword } from '../helper/authHelper.js'
+import userModel from '../models/user.model.js'
 
 export const registerContoller = async (req, res) => {
   try {
@@ -69,5 +69,24 @@ export const loginController = async (req, res) => {
         .status(200)
         .send({ success: false, message: 'Incorrect password' })
     }
-  } catch (err) {}
+    const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '7d'
+    })
+
+    res.status(200).send({
+      success: true,
+      message: 'User logged in successfully',
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        birthdate: user.birthdate,
+        role: user.role
+      },
+      token
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(500).send({ success: false, message: 'Error in login', err })
+  }
 }
