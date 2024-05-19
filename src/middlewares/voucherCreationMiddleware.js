@@ -1,4 +1,4 @@
-export const voucherCreationMiddleware = async(req, res => {
+export const voucherCreationMiddleware = (req, res) => {
   const { type } = req.body
 
   if (!type) {
@@ -13,8 +13,6 @@ export const voucherCreationMiddleware = async(req, res => {
     return createPercentageVoucher(req, res)
   } else if (type == 'walletPoints') {
     return createWalletPointsVoucher(req, res)
-  } else if (type == 'walletCash') {
-    return createWalletCashVoucher(req, res)
   } else if (type == 'firstOrder') {
     return createFirstOrderVoucher(req, res)
   } else if (type == 'birthdayGift') {
@@ -26,5 +24,5 @@ export const voucherCreationMiddleware = async(req, res => {
       .status(400)
       .send({ success: false, message: 'Invalid voucher type' })
   }
-})
+}
 
