@@ -1,1 +1,1 @@
-export const DB_NAME="voucher_system";
+export const DB_NAME="vouchersystem";
