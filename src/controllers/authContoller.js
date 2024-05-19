@@ -1,9 +1,10 @@
 import { hashPassword, comparePassword } from '../helper/authHelper.js'
 import userModel from '../models/user.model.js'
+import JWT from "jsonwebtoken"
 
 export const registerContoller = async (req, res) => {
   try {
-    const { name, email, password, birthdate } = req.body
+    const { name, email, password, birthday } = req.body
     if (!name) {
       return res.send({ error: 'Name is required' })
     }
@@ -30,7 +31,7 @@ export const registerContoller = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      birthdate
+      birthday
     }).save()
 
     res.status(201).send({
@@ -55,7 +56,7 @@ export const loginController = async (req, res) => {
         .send({ success: false, message: 'Email or password is required' })
     }
     //check if user registered or not
-    const user = userModel.findOne({ email })
+    const user = await userModel.findOne({ email })
     if (!user) {
       return res
         .status(404)
