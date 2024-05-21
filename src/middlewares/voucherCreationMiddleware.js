@@ -1,3 +1,5 @@
+import { createBirthdayGiftVoucher, createCashVoucher, createFirstOrderVoucher, createFreeShippingVoucher, createPercentageVoucher, createWalletPointsVoucher } from "../controllers/generateController.js"
+
 export const voucherCreationMiddleware = (req, res) => {
   const { type } = req.body
 
@@ -18,7 +20,7 @@ export const voucherCreationMiddleware = (req, res) => {
   } else if (type == 'birthdayGift') {
     return createBirthdayGiftVoucher(req, res)
   } else if (type == 'freeshippingVoucher') {
-    return createFreeshippingVoucher(req, res)
+    return createFreeShippingVoucher(req, res)
   } else {
     return res
       .status(400)
