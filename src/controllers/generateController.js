@@ -24,7 +24,7 @@ export const createCashVoucher = async (req, res) => {
       description,
       expirationDate,
       minimumCartAmount,
-      createdAt: new Date()
+      createdAt: Date.now(),
     })
 
     await newVoucher.save()
