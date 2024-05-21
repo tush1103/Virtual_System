@@ -18,14 +18,9 @@ const orderSchema = new mongoose.Schema({
     type:Number,
     default:1
   },
-  createdAt: {
+  purchaseDate: {
     type: Date,
     default: Date.now
-  },
-  status: {
-    type: String,
-    enum: ['Pending', 'Processing', 'Completed', 'Cancelled'],
-    default: 'Pending'
   }
 })
 
