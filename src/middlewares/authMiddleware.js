@@ -4,7 +4,14 @@ import userModel from '../models/user.model.js'
 //Protected Routes
 export const requireSignIn = async (req, res, next) => {
   try {
-    const decode = JWT.verify(req.headers.authorization, process.env.JWT_SECRET)
+    const token = req.cookies.token
+    if (!token) {
+      return res.status(401).send({
+        success: false,
+        message: 'UnAuthorized Access'
+      })
+    }
+    const decode = JWT.verify(token, process.env.JWT_SECRET)
     req.user = decode
     next()
   } catch (error) {
