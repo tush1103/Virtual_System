@@ -14,10 +14,6 @@ const orderSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Voucher'
   },
-  quantity:{
-    type:Number,
-    default:1
-  },
   purchaseDate: {
     type: Date,
     default: Date.now

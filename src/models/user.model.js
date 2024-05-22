@@ -18,17 +18,6 @@ const userSchema = new Schema(
       type: String,
       required: true
     },
-    birthday: {
-      type: Date
-    },
-    walletPoints: {
-      type: Number,
-      default: 0
-    },
-    walletCash: {
-      type: Number,
-      default: 0
-    },
     role: {
       type: Number,
       default: 0
