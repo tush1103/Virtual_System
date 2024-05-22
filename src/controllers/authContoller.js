@@ -27,7 +27,7 @@ export const registerContoller = async (req, res) => {
     const hashedPassword = await hashPassword(password)
 
     //save user in db
-    const user = new userModel({
+    const user =await new userModel({
       name,
       email,
       password: hashedPassword,
