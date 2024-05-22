@@ -1,4 +1,10 @@
-import { createBirthdayGiftVoucher, createCashVoucher, createFirstOrderVoucher, createFreeShippingVoucher, createPercentageVoucher, createWalletPointsVoucher } from "../controllers/generateController.js"
+import {
+  createBirthdayGiftVoucher,
+  createCashVoucher,
+  createFirstOrderVoucher,
+  createPercentageVoucher,
+  createWalletPointsVoucher
+} from '../controllers/generateController.js'
 
 export const voucherCreationMiddleware = (req, res) => {
   const { type } = req.body
@@ -19,12 +25,9 @@ export const voucherCreationMiddleware = (req, res) => {
     return createFirstOrderVoucher(req, res)
   } else if (type == 'birthdayGift') {
     return createBirthdayGiftVoucher(req, res)
-  } else if (type == 'freeshippingVoucher') {
-    return createFreeShippingVoucher(req, res)
   } else {
     return res
       .status(400)
       .send({ success: false, message: 'Invalid voucher type' })
   }
 }
-

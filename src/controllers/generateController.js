@@ -90,7 +90,7 @@ export const createPercentageVoucher = async (req, res) => {
 export const createWalletPointsVoucher = async (req, res) => {
   try {
     const { code, walletPoints, description, expirationDate } = req.body
-    if (!code || !walletPoints || !description || !expirationDate) {
+    if (!code || !walletPoints || !description || !expirationDate || !quantity) {
       return res.status(400).send({
         success: false,
         message: 'Code,walletPoints,description,expirationDate are required'
@@ -102,6 +102,7 @@ export const createWalletPointsVoucher = async (req, res) => {
       walletPoints,
       description,
       expirationDate,
+      quantity,
       createdAt: new Date()
     })
 
@@ -192,36 +193,3 @@ export const createBirthdayGiftVoucher = async (req, res) => {
   }
 }
 
-export const createFreeShippingVoucher = async (req, res) => {
-  try {
-    const { code, description, expirationDate} = req.body
-    if (!code || !description || !expirationDate) {
-      return res.status(400).send({
-        success: false,
-        message: 'Code,description,expirationDate are required'
-      })
-    }
-    const newVoucher = new voucherModel({
-      code,
-      type: 'freeShipping',
-      description,
-      expirationDate,
-      createdAt: new Date()
-    })
-
-    await newVoucher.save()
-
-    res.status(201).send({
-      success: true,
-      message: 'freeShipping voucher created successfully',
-      voucher: newVoucher
-    })
-  } catch (err) {
-    console.log('Error creating voucher', err)
-    res.status(500).send({
-      success: false,
-      message: 'Error creating freeShipping voucher',
-      error: err
-    })
-  }
-}
