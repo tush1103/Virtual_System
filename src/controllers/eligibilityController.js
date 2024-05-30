@@ -10,24 +10,54 @@ export const eligibilityController = async (req, res) => {
       return res.send(404).send({ message: 'User not found' })
     }
 
-    const vouchers = await vouchersModel.find({
-      activeAtDate: { $lte: new Date() },
-      expirationDate: { $gte: new Date() },
-      minimumCartAmount: { $lte: total },
-      type: { $ne: 'firstOrder' }
-    })
-
     const isFirstOrderVoucherValid = await orderModel.findOne({
       userId: req.user._id
     })
-    console.log(isFirstOrderVoucherValid)
-    if (!isFirstOrderVoucherValid) {
-      const firstOrderVoucher = await vouchersModel.findOne({
-        type: 'firstOrder'
-      })
-      console.log(firstOrderVoucher)
-      vouchers.push(firstOrderVoucher)
+
+    let query = {
+      activeAtDate: { $lte: new Date() },
+      expirationDate: { $gte: new Date() },
+      minimumCartAmount: { $lte: total }
     }
+
+    if (isFirstOrderVoucherValid) {
+      query['type'] = { $ne: 'firstOrder' }
+    }
+
+    const vouchers = await vouchersModel.aggregate([
+      {
+        $match: query
+      },
+      {
+        $lookup: {
+          from: 'orders',
+          localField: '_id',
+          foreignField: 'appliedVoucher',
+          pipeline: [
+            {
+              $match: {
+                userId: new mongoose.Types.ObjectId(req.user._id)
+              }
+            }
+          ],
+          as: 'ordersData'
+        }
+      },
+      {
+        $addFields: {
+          size: {
+            $size: '$ordersData'
+          }
+        }
+      },
+      {
+        $match: {
+          $expr: {
+            $lt: ['$size', '$inUse']
+          }
+        }
+      }
+    ])
 
     return res.status(200).send({ vouchers })
   } catch (e) {
