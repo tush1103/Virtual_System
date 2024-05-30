@@ -22,8 +22,14 @@ export const placeOrderController = async (req, res) => {
 
     //check if voucher is valid or not
     if (voucher.type == 'discountPerc') {
+      if (total < voucher.minimumCartAmount) {
+        return res.send({ success: false, message: 'voucher not valid' })
+      }
       newtotal = total - total * (voucher.discountPercentage / 100)
     } else if (voucher.type == 'discountCash') {
+      if (total < voucher.minimumCartAmount) {
+        return res.send({ success: false, message: 'voucher not valid' })
+      }
       newtotal = total - voucher.discountAmount
     } else if (voucher.type == 'firstOrder') {
       const firstOrder = await orderModel.findOne({ userId: req.user._id })
