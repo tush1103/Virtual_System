@@ -10,7 +10,8 @@ export const createVoucher = async (req, res) => {
       description,
       minimumCartAmount,
       expirationDate,
-      type
+      type,
+      inUse
     } = req.body
     if (!code || !description || !expirationDate) {
       return res.status(404).send({
@@ -25,7 +26,7 @@ export const createVoucher = async (req, res) => {
           .send({ success: false, message: 'minimumCartAmount is required' })
       }
     }
-    const newVoucher =await new voucherModel({
+    const newVoucher = await new voucherModel({
       code,
       type,
       discountAmount,
@@ -33,6 +34,7 @@ export const createVoucher = async (req, res) => {
       description,
       expirationDate,
       minimumCartAmount,
+      inUse,
       activeAtDate: new Date()
     })
     await newVoucher.save()

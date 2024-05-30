@@ -28,6 +28,10 @@ const voucherSchema = new Schema(
       type: Number,
       default: 0
     },
+    inUse: {
+      type: Number,
+      default: 1
+    },
     expirationDate: {
       type: Date,
       required: true
