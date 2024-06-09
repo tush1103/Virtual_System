@@ -7,6 +7,7 @@ import { createVoucher } from '../controllers/generateController.js'
 import { isAdmin, requireSignIn } from '../middlewares/authMiddleware.js'
 import { eligibilityController } from '../controllers/eligibilityController.js'
 import { placeOrderController } from '../controllers/placeOrderController.js';
+import { validateVoucher } from '../middlewares/validateMiddleware.js'
 const router = express.Router()
 
 router.post('/register', registerContoller)
@@ -18,6 +19,6 @@ router.post(
   isAdmin,
   createVoucher
 )
-router.post('/placeOrder',requireSignIn,placeOrderController)
+router.post('/placeOrder',requireSignIn,validateVoucher,placeOrderController)
 
 export default router

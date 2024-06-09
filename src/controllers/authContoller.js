@@ -6,20 +6,20 @@ export const registerContoller = async (req, res) => {
   try {
     const { name, email, password, birthday } = req.body
     if (!name) {
-      return res.send({ error: 'Name is required' })
+      return res.status(404).send({ error: 'Name is required' })
     }
     if (!email) {
-      return res.send({ error: 'Email is required' })
+      return res.status(404).send({ error: 'Email is required' })
     }
     if (!password) {
-      return res.send({ error: 'Password is required' })
+      return res.status(404).send({ error: 'Password is required' })
     }
 
     //checking existing user
     const existingUser = await userModel.findOne({ email })
     if (existingUser) {
       return res
-        .status(200)
+        .status(400)
         .send({ success: false, message: 'User already exists,please login' })
     }
 
@@ -67,7 +67,7 @@ export const loginController = async (req, res) => {
     const isMatch = await comparePassword(password, user.password)
     if (!isMatch) {
       return res
-        .status(200)
+        .status(400)
         .send({ success: false, message: 'Incorrect password' })
     }
     const token = JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
